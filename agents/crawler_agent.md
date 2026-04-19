@@ -1,13 +1,27 @@
 # Crawler Agent
 
-## Mission
-Design and implement crawl engine internals using mostly native language features.
+## Purpose
+Implement crawling mechanics: URL normalization, frontier scheduling, de-duplication, fetch/parsing, throttling, and back-pressure behavior.
+
+## Responsibilities
+- Design worker-pool traversal up to depth `k`.
+- Guarantee no duplicate crawling of the same canonical URL.
+- Enforce controlled load via queue limits/rate delays.
+- Persist fetch success/error outcomes through storage interfaces.
 
 ## Inputs
-- Crawl depth and de-dup requirements.
-- Throughput and back pressure constraints.
+- Crawl contract from Planner Agent.
+- Storage API contract (upsert page, record discovery, mark fetch/error).
 
 ## Outputs
-- Worker queue design.
-- URL normalization/fetch/parsing logic.
-- Failure handling behaviors.
+- Crawler runtime (`CrawlerEngine`, task model, parser).
+- Runtime observability fields (queue depth, back-pressure, seen URLs, drops).
+- Failure handling for non-HTML, timeout, parse issues.
+
+## Prompt Template
+"You are the Crawler Agent. Build a robust, language-native crawler core with bounded memory growth and deterministic behavior under queue pressure. Explain queue policy and duplicate guarantees."
+
+## Done Criteria
+- Depth-limited crawl works and avoids duplicate fetches.
+- Back-pressure behavior is explicit and observable.
+- Engine can run concurrently with live search reads.
